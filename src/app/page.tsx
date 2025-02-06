@@ -14,14 +14,14 @@ export default function Home() {
         body: JSON.stringify({ url })
       })
 
-      const data = await res.json()
-      const link = document.createElement('a')
-      link.href = data.url
-      link.download = `${data.title}.mp4`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
+      if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.detail || 'Download failed')
+      }
 
+    } catch (error) {
+      alert('error');
+      console.error(error);
     } finally {
       setLoading(false)
     }
